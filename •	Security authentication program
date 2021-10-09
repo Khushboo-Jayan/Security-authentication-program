@@ -1,0 +1,277 @@
+/*************************************************************************************************
+The program below is a security authentification program that asks the user to enter a 4 digit pin number. 
+The user is allowed to encrypt and decrypt the code. The encrypted code is also compared with an authorised access code i.e. {4523}
+this comparision is also stored in a variable. The program allows provides the number of times right and wrong code was entered by 
+the variable that was stored while comparision during enxryption call. However, the user is allowed to decrpt the code if and only if 
+it was encrypted first. Moreover, all the function parameters are passed by refrence. After each function is called the parameter is 
+passed  back to main and the menu is displayed. The program will end when the user selects option 5.
+
+
+input function description:-
+1) Reads a 4 digit individual integer value and stores it in an integer array 
+
+
+
+encryption function description:-
+1) Swaps the 1st with 3rd element and 2nd with 4th element and adds 1 to each idividual digit.
+2) If the individual digit is equal to 10 then the array elemet is changed to 0
+3) Pointer notation and dereference operators are used.
+4)Also comapres with available access code and verifies if the code entered is right or wrong and the counter is incremented by 1 using derefrence operator
+
+
+decryption function description:-
+1) If the individual digit is less than 1 to 9 then the array elemet is changed to 0
+2) Swaps the 1st with 3rd element and 2nd with 4th element and adds 1 to each idividual digit.
+3) Pointer notation and dereference operators are used.
+
+display function description:-
+1) Displays the number of time right and wrong code was entered
+
+
+IDE :- Dev C++ (The program was developed and tested in Dev C++.)
+
+Author :- Khushboo Jayan
+
+Student number :- D20123668
+
+Date :- 07/03/2021
+ 
+***************************************************************************************************/
+
+
+
+
+#include <stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+
+#define SIZE 4
+
+//function declarations
+
+
+void input(int *copy);
+void encryption(int *copy, int *no_enc, int *yes_dec, int *correct, int *incorrect);
+void decryption(int *copy, int *set);
+void display(int *correct, int *incorrect);
+
+
+int main()
+{
+	//variables are declared and initialised
+	
+  int pin[SIZE] = {1,2,3,4};
+  int access_code[SIZE] = {4,5,2,3};
+  char choice;
+  int repeat=1, set_enc=0, set_dec=0, right=0, wrong=0;
+
+  while(repeat != 0)						//repeat this loop i.e. menu while the repeat is equal to zero
+  {
+        
+        
+        //print the following prompt as a menu option and select one
+        
+		printf("\n\nSelect one of the options\n\n");
+        printf("1) Enter any code\n");
+        printf("2) Encrypt the code entered and verify if correct\n");
+        printf("3) Decrypt code\n");
+        printf("4) Display the number of times the encrypted code entered matches the authorised code (i) Successfully (ii)Incorrectly\n");
+        printf("5) Exit Program\n");
+       
+        scanf("%c", &choice);
+        fflush(stdin);														// clear the output buffer
+
+     
+
+        switch(choice)					// tests the value of a character variable i.e. choice and compares it with multiple cases. 
+        {
+          case '1':
+          {
+            input(&pin[SIZE]);			//function 'verify' is called and the array 'pin' is passed by refrence i.e. the address of 'pin' is passed as a parameter
+            break;
+          }	//end case 1			
+
+          case '2':
+          {
+          	if(set_enc == 0)									//allows the 'encryption' funtion to be called only once  
+          		{
+            	encryption(&pin[SIZE], &set_enc, &set_dec, &right, &wrong);		//function 'encryption' is called and multiple parameter i.e. 'pin'(integer array) , 'set_enc', 'right', 'wrong' are passed by refrence i.e. the address is passed 
+        		}
+        	else
+				{
+					printf("\n\nYoualready encrypted the code");
+				}	//end else statement
+			break;
+          }	//end case 2
+          
+          case '3':
+          	{
+          		if(set_dec == 1)									//allows the 'decryption' funtion to be called only if the code is encrypted, when the code is encrypted i.e. case 2 is executed set is assigned 1 
+          		{
+          			decryption(&pin[SIZE], &set_dec);				//function 'decryption' is called and multiple parameter i.e. 'pin'(integer array) , 'set_enc' are passed by refrence i.e. the address is passed 
+				}	//end if statement
+				else
+				{
+					printf("\n\nYou did not encrypt the code yet first encrypt then decrypt the function or you have already decrypted the code");
+				}	//end else statement
+				break;
+          			
+			 }	//end case 3
+		  case '4':
+		  	{
+		  		display(&right, &wrong);						//display function is called and counter for number of times right and wrong code was entered are passed bt reference
+				break;	  		
+			}	//end case 4
+
+          case '5':
+          {
+            repeat = 0;											//sets the while loop to false and terminated the program
+            break;
+          }	//end case 5
+
+          default:
+          {
+            printf("\nInvalid input please enter a valid integer\n\n");				//Is displayed when unexpected integer or characters are entered.
+            break;
+          }	//end default case 
+
+        }	//end switch statement
+  }	//	//end while loop
+ 
+ 
+}	//end main
+
+
+
+
+
+//function declarations
+
+void input(int *copy)											//access_code is passed by reference
+{
+	//local variables are declared and initialised
+	
+    int i, counter = 0, ver=0, character =0, validation=0, len =0;
+ 
+    printf("Enter a 4 digit integer PIN number (\"Press enter after each digit\" )\n");
+    
+    // Read the integer variable using for loop
+    
+    for(i=0; i<SIZE; i++)
+    {
+        scanf("%1d", &*(copy+i));
+        fflush(stdin);											// clear the output buffer
+    }	//end for loop
+    
+    //Print the entered pin
+}
+
+void encryption(int *copy, int *no_enc, int *yes_dec, int *correct, int *incorrect)
+{
+	
+	*no_enc =1;
+	*yes_dec = 1;
+	
+	//local variables are declared and initialised
+      int temp, i, counter=0;
+      int compare_ary[SIZE] = {4,5,2,3};
+      
+    //first and third elements are swapped
+    
+      	temp = *(copy + 0);
+      	*(copy + 0) = *(copy + 2);
+        *(copy + 2) = temp;
+    
+   //second and fourth elements are swapped
+   
+      	temp = *(copy + 1);
+        *(copy + 1) = *(copy + 3);
+        *(copy + 3) = temp;
+        
+        //Each individual digit is incremented by 1 using for loop
+        
+        printf("\nEncrypted code is: ");
+
+      	for(i = 0;i<SIZE;i++)
+        {
+            *(copy+i)= *(copy+i) + 1; 									//dereference operater is used		
+            if(*(copy+i) == 10)
+            {
+            	*(copy+i) = 0;											//if the value of  array element is equal to 10 then it is changed to 0
+			}	//end if statement 
+            printf("%d", *(copy+i));
+        }	//end for loop
+		
+		//the entered code is compared with the available access code
+		for(i = 0;i<SIZE;i++)
+        {
+            if( *(copy+i) == *(compare_ary+i) )
+            {
+            	counter++;												//if the digit of the entered code matches the available access code then the counter is increment by 1
+            															//and this will happen 4 times for each individual digit
+			 }	//end if statement
+        }	//end for loop  
+        
+        if(counter == 4)												//if all the digits of the entered code matches the digits of available access code then the counter is increment by 1
+        {
+        	printf("\nCorrect Code\n");
+        	*correct += 1;
+		}	//end if statement
+		
+		else															//if either one of the digits of the entered code does not matche the digits of available access code then the counter is increment by 1 
+		{
+			printf("\nWrong pin entered\n");
+			*incorrect += 1;
+		}	//end else statement 
+}
+
+void decryption(int *copy, int *set)
+{
+	*set =1;
+	
+	//local variables are declared and initialised
+	
+	int i, temp;
+	
+	//Each individual digit is decremented by 1 using for loop
+		for(i = 0;i<SIZE;i++)
+        {
+            *(copy+i)= *(copy+i) - 1; 
+            if(*(copy+i) < 0)											//if the value of  array element is negative then it is changed to 0
+            {
+            	*(copy+i) = 9;
+			}	//end if statement 
+    	}	//end for loop
+    	
+    	//first and third elements are swapped    
+   
+    	temp = *(copy + 0);
+      	*(copy + 0) = *(copy + 2);
+        *(copy + 2) = temp;
+   
+   		//second and fourth elements are swapped
+   
+      	temp = *(copy + 1);
+        *(copy + 1) = *(copy + 3);
+        *(copy + 3) = temp;
+    
+    	printf("\nDecrypted code is: ");
+    	
+    	//decrypted code is printed using for loop
+    	
+    	for(i = 0;i<SIZE;i++)
+        {
+        	printf("%d" ,*(copy+i));
+		}	//end for loop
+}
+
+//Prints the number of times right and wrong code was entered
+
+void display(int *correct, int *incorrect)
+{
+	printf("\nThe right code was entered %d", *correct);
+	printf("\nThe wrong code was entered %d", *incorrect);
+}
+
+
