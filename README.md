@@ -31,4 +31,6 @@ display function description:-
 
 **IDE** :- Dev C++ (The program was developed and tested in Dev C++.)
 
+**Language** :- C
+
 **Author** :- _**Khushboo Jayan**_
