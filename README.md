@@ -29,6 +29,6 @@ display function description:-
 1) Displays the number of time right and wrong code was entered
 
 
-IDE :- Dev C++ (The program was developed and tested in Dev C++.)
+**IDE** :- Dev C++ (The program was developed and tested in Dev C++.)
 
-Author :- Khushboo Jayan
+**Author** :- _**Khushboo Jayan**_
